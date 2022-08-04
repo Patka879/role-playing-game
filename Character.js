@@ -2,9 +2,9 @@ import { getDiceRollArray } from './utils.js'
 
 function Character(data) {
     Object.assign(this, data)
-    this.getDiceHtml = function(diceCount   ) {
+    this.getDiceHtml = function(diceCount) {
         return getDiceRollArray(diceCount).map(function(num){ 
-            return  `<div class="dice">${num}</div>`
+            return `<div class="dice">${num}</div>`
         }).join('')
     }
     this.getCharacterHtml = function() {
