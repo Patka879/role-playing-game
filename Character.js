@@ -17,6 +17,13 @@ function Character(data) {
             return total + currentNumber    
         })
         this.health -= totalAttackScore
+        if (this.health <= 0) {
+            this.dead = true
+            this.health = 0 
+            console.log(this.dead)
+        } else {
+            return this.health
+        }
     }
 
     this.getCharacterHtml = function() {
