@@ -20,9 +20,6 @@ function Character(data) {
         if (this.health <= 0) {
             this.dead = true
             this.health = 0 
-            console.log(this.dead)
-        } else {
-            return this.health
         }
     }
 
