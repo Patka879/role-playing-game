@@ -18,7 +18,10 @@ function attack() {
         endGame()
     } else if(monster.dead){
         if(monstersArray.length > 0){
-            monster = getNewMonster()
+            setTimeout(()=>{
+                monster = getNewMonster()
+                render()
+            },1000)
         } else {
             endGame()
         }
@@ -29,17 +32,20 @@ function endGame() {
     const endMessage = wizard.health === 0 && monster.health === 0 ?
         "No victors - all creatures are dead" :
         wizard.health > 0 ? "The Wizard Wins" :
-            `The ${monster.name} is Victorious`
+            "The Orc is Victorious"
 
     const endEmoji = wizard.health > 0 ? "🔮" : "☠️"
-    document.body.innerHTML = `
-        <div class="end-game">
-            <h2>Game Over</h2> 
-            <h3>${endMessage}</h3>
-            <p class="end-emoji">${endEmoji}</p>
-        </div>
-        `
+        setTimeout(()=>{
+            document.body.innerHTML = `
+                <div class="end-game">
+                    <h2>Game Over</h2> 
+                    <h3>${endMessage}</h3>
+                    <p class="end-emoji">${endEmoji}</p>
+                </div>
+                `
+        }, 1500)
 }
+
 
 document.getElementById("attack-button").addEventListener('click', attack)
 
