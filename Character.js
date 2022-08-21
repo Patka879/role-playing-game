@@ -1,39 +1,52 @@
-import { getDiceRollArray, getDicePlaceholderHtml } from './utils.js'
-
-const getPercentage = (remainingHealth, maximumHealth) => (remainingHealth * 100) / maximumHealth
+import { getDiceRollArray, getDicePlaceholderHtml, getPercentage } from './utils.js'
 
 function Character(data) {
     Object.assign(this, data)
-    this.diceArray = getDicePlaceholderHtml(this.diceCount)
     this.maxHealth = this.health
-    this.getDiceHtml = function() {
+
+    this.diceArray = getDicePlaceholderHtml(this.diceCount)
+
+    this.getDiceHtml = function () {
         this.currentDiceScore = getDiceRollArray(this.diceCount)
-        this.diceArray = this.currentDiceScore.map(num => `<div class="dice">${num}</div>`).join('')
+        this.diceArray = this.currentDiceScore.map((num) =>
+            `<div class="dice">${num}</div>`).join("")
     }
 
-    this.takeDamage = attackScoreArray => {
-        const totalAttackScore = attackScoreArray.reduce((total, currentNumber) => total + currentNumber)
+    this.takeDamage = function (attackScoreArray) {
+        const totalAttackScore = attackScoreArray.reduce((total, num) => total + num)
         this.health -= totalAttackScore
         if (this.health <= 0) {
             this.dead = true
-            this.health = 0 
+            this.health = 0
         }
     }
 
-    this.getCharacterHtml = function() {
-        const {elementId, name, avatar, health, diceCount, diceArray} = this
-        let diceHtml = this.getDiceHtml(diceCount)
+    this.getHealthBarHtml = function () {
+        const percent = getPercentage(this.health, this.maxHealth)
+        
+        return `
+        <div class="health-bar-outer">
+            <div class="health-bar-inner ${percent < 26 ? "danger" : ""} " 
+            style="width: ${percent}%;">
+            </div>
+        </div>`
+    }
+    
 
+    this.getCharacterHtml = function () {
+        const { elementId, name, avatar, health, diceCount } = this
+        const healthBar = this.getHealthBarHtml()
         return `
             <div class="character-card">
                 <h4 class="name"> ${name} </h4>
                 <img class="avatar" src="${avatar}" />
                 <div class="health">health: <b> ${health} </b></div>
-                <div class="dice-container">    
-                    ${diceArray}
+                ${healthBar}
+                <div class="dice-container">
+                    ${this.diceArray}
                 </div>
             </div>`
     }
 }
 
-export {Character}
+export default Character
